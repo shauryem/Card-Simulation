@@ -8,6 +8,9 @@ using namespace std;
 int main(int argv, char** argc){
 	string n1 = "Alice";
 	string n2 = "Bob";
+	
+ //must input two text files
+	
   if(argv < 3){
     cout << "Please provide 2 file names" << endl;
     return 1;
@@ -32,7 +35,7 @@ p1.deal(line);
 p2.deal(line);
   }
   cardFile2.close();
-  pointlessGame(p1, p2);
+  simulationGame(p1, p2);
   
   cout<<endl<<p1;
   cout<<endl<<p2;
