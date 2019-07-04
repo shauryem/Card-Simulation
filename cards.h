@@ -68,7 +68,7 @@ public:
     
     string getName() const;
 	
-    friend void pointlessGame(player& p1, player& p2);
+    friend void simulationGame(player& p1, player& p2);
 
     friend ostream& operator<<(ostream& os, const player& p1);
 
