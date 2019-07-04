@@ -6,16 +6,23 @@
 #include "cards.h"
 #include<stack>
 
+//Constructor for BST Node
+
 player::Node::Node(string& value) {
     data.setValue(value);
     left = NULL;
     right = NULL;
     parent = NULL;
 }
+
+//Default constructor for card -> the data being stored in each node of BST
+
 card::card() {
     value = "";
     orderScore = 0;
 }
+//Paramaterized constructor for card
+
 card::card(string& v) {
     value = v;
 
@@ -41,6 +48,10 @@ card::card(string& v) {
         orderScore += stoi(tmp);
     }
 }
+
+// Setter function for card class
+// Each card is given a score so that they can be ordered and placed into the BST
+
 void card::setValue(string v) {
     value = v;
 
@@ -66,9 +77,14 @@ void card::setValue(string v) {
         orderScore += stoi(tmp);
     }
 }
+// Getter function for card class
+
 string card::getValue() const {
     return value;
 }
+
+// Parameterized constructor for player class
+
 player::player(string& name) : root(NULL) {
     this->name = name;
 }
@@ -87,6 +103,7 @@ void player::clear(player::Node *n) {
     }
 }
 // insert value in tree; return false if duplicate
+
 bool player::deal(string value) {
     // handle special case of empty tree first
     if (!root) {
@@ -99,6 +116,7 @@ bool player::deal(string value) {
 }
 
 // recursive helper for insert (assumes n is never 0)
+
 bool player::dealHelper(string value, player::Node *n) {
     card c(value);
 
@@ -124,23 +142,7 @@ bool player::dealHelper(string value, player::Node *n) {
         }
     }
 }
-
-/*
-player::Node* player::getNodeFor(string value, player::Node* n) const {
-//if (value== "ERROR"|| value == "") return n->parent;
-    if(n) {
-        if(n->data.getValue()==value) {
-            cout<<"HERE";
-            return n;
-        }
-        if(getNodeFor(value, n->left))
-            return getNodeFor(value, n->left);
-        if(getNodeFor(value, n->right))
-            return getNodeFor(value, n->right);
-    }
-    return NULL;
-}
-*/
+// Getter function to geta node given a card string value
 
 player::Node* player::getNodeFor(string value, player::Node* n) const{
 	card c(value);
@@ -166,19 +168,7 @@ player::Node* player::getNodeFor(string value, player::Node* n) const{
 	}	
 
 }
-/*
-player::Node* player::getNodeFor(string value) const {
-    player::Node* n = root;
-    while(n->left) n = n->left;
-    while(n) {
-        if(n->data.getValue() == value) {
-            return n;
-        }
-        n = getSuccessorNode(n->data.getValue());
-    }
-    return NULL;
-}
-*/
+
 
 // returns true if value is in the tree; false if not
 bool player::contains(string value) const {
@@ -190,6 +180,9 @@ bool player::contains(string value) const {
 
 
 }
+
+//Getter for predecessor in BST (HELPER)
+
 player::Node* player::getPredecessorNode(string value) const {
     Node*n = getNodeFor(value,root);
     card c(value);
@@ -210,11 +203,14 @@ player::Node* player::getPredecessorNode(string value) const {
     return NULL;
 }
 
+//Getter for predecessor in BST
+
 string player::getPredecessor(string value) const {
     if (getPredecessorNode(value))
         return getPredecessorNode(value)->data.getValue();
     return "ERROR";
 }
+//Getter for succecessor in BST (HELPER)
 player::Node* player::getSuccessorNode(string value) const {
     Node*n = getNodeFor(value,root);
     card c(value);
@@ -234,6 +230,8 @@ player::Node* player::getSuccessorNode(string value) const {
     }
     return NULL;
 }
+//Getter for succecessor in BST
+
 string player::getSuccessor(string value) const {
     if (getSuccessorNode(value))
         return getSuccessorNode(value)->data.getValue();
@@ -297,6 +295,7 @@ string player::getName() const {
     return name;
 }
 
+// Checks for equality
 
 bool operator==(const card& c1, const card& c2) {
     if(c1.orderScore == c2.orderScore)
@@ -314,6 +313,7 @@ bool operator <(const card& c1, const card& c2) {
     return false;
 
 }
+// Prints out a player object (the hand)
 ostream& operator<<(ostream& os, const player& p1) {
     player::Node* curr = p1.root;
     os<<p1.name<<"'s cards:"<<endl;
@@ -351,7 +351,11 @@ player::Node* player::max() {
     while(p->right) p = p->right;
     return p;
 }
-void pointlessGame(player& p1, player& p2) {
+
+// Each player has a turn. When it is a players turn, iterations through the opposite players hand occurs to check for matches. 
+//By the end, both hands will be void of matches
+void simulationGame(player& p1, player& p2) {
+    
     string i1Val;
     string i2Val;
     player::Node* i1 = p1.min();
